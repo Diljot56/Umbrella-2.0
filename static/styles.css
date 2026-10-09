@@ -1,0 +1,76 @@
+html, body {
+  background-color: #0f172a;
+  color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.glass-panel {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.glow-hover:hover {
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+.source-card {
+  transition: all 0.3s ease;
+}
+
+.source-card.highlighted {
+  border-color: #38bdf8;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+  background: rgba(56, 189, 248, 0.1);
+  transform: scale(1.02);
+}
+
+.citation-link {
+  color: #38bdf8;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0 2px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.citation-link:hover {
+  background-color: rgba(56, 189, 248, 0.2);
+  text-decoration: underline;
+}
+
+.loader {
+    border-top-color: #38bdf8;
+    -webkit-animation: spinner 1.5s linear infinite;
+    animation: spinner 1.5s linear infinite;
+}
+
+@keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+}
+.markdown-body p { margin-bottom: 1em; line-height: 1.6; }
+.markdown-body pre { background: #1e293b; padding: 1em; border-radius: 0.5em; overflow-x: auto; margin-bottom: 1em; border: 1px solid rgba(255,255,255,0.1); }
+.markdown-body code { font-family: 'Roboto Mono', monospace; font-size: 0.9em;  }

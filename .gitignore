@@ -1,0 +1,17 @@
+
+# Database and Index Storage
+data/index/
+data/qdrant_db/
+*.lock
+*.pkl
+
+# Python and Environment artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Model caches
+models/
+.cache/

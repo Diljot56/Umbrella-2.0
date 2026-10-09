@@ -1,0 +1,23 @@
+[
+  {
+    "query_id": "Q1",
+    "query": "How do I configure maximum job timeout in seconds?",
+    "expected_source": "configure_runners.md",
+    "target_signal": "dense_vector",
+    "notes": "Paraphrased query testing semantic retrieval on documentation"
+  },
+  {
+    "query_id": "Q2",
+    "query": "GitlabHttpError",
+    "expected_source": "gitlab_exceptions.py",
+    "target_signal": "sparse_bm25",
+    "notes": "Exact exception class name testing BM25 token matching"
+  },
+  {
+    "query_id": "Q3",
+    "query": "What parameter is used for clone_url when runner cannot reach instance?",
+    "expected_source": "configure_runners.md",
+    "target_signal": "hybrid_rerank",
+    "notes": "Tests reranker promoting precise configuration blocks over generic mentions"
+  }
+]

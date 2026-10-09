@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Umbrella — Enterprise Hybrid RAG System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+    
+    <!-- syntax highlighters and markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col p-6">
+    <header class="w-full max-w-7xl mx-auto flex flex-col items-center mb-8 mt-4">
+        <h1 class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-400 to-indigo-400 tracking-tight mb-2">Project Umbrella</h1>
+        <p class="text-slate-400 text-lg font-medium">Enterprise Hybrid RAG System</p>
+    </header>
+
+    <main class="w-full max-w-7xl mx-auto flex-grow flex flex-col gap-6">
+        
+        <!-- Search Area -->
+        <section class="glass-panel rounded-2xl p-6 w-full flex flex-col gap-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <input type="text" id="queryInput" placeholder="Enter your query..." class="flex-grow bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all text-lg font-medium shadow-inner">
+                <div class="flex gap-2">
+                    <button id="btnAsk" class="bg-brand-600 hover:bg-brand-500 text-white font-medium py-3 px-6 rounded-xl transition-colors min-w-[120px] flex justify-center items-center gap-2 glow-hover shadow-lg shadow-brand-500/20">
+                        <span>Ask AI</span>
+                    </button>
+                    <button id="btnSearch" class="bg-slate-700 hover:bg-slate-600 text-white font-medium py-3 px-6 rounded-xl transition-colors min-w-[170px] flex justify-center items-center gap-2 glow-hover">
+                        <span>Search & Inspect</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chips -->
+            <div class="flex flex-wrap gap-2 text-sm mt-1">
+                <span class="text-slate-400 font-medium mr-2 self-center uppercase tracking-wider text-xs">Samples</span>
+                <button class="chip-btn bg-slate-800/80 hover:bg-slate-700 border border-slate-700 px-4 py-1.5 rounded-full transition-colors font-medium text-slate-300">How to handle CI runner timeouts (137)?</button>
+                <button class="chip-btn bg-slate-800/80 hover:bg-slate-700 border border-slate-700 px-4 py-1.5 rounded-full transition-colors font-medium text-slate-300">GitlabHttpError exception hierarchy</button>
+                <button class="chip-btn bg-slate-800/80 hover:bg-slate-700 border border-slate-700 px-4 py-1.5 rounded-full transition-colors font-medium text-slate-300">Runner registration architecture</button>
+            </div>
+        </section>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="hidden w-full flex flex-col items-center justify-center py-12 gap-4">
+            <div class="w-12 h-12 border-4 border-slate-700 rounded-full loader"></div>
+            <p class="text-brand-400 font-medium animate-pulse tracking-wide" id="loadingText">Synthesizing Answer...</p>
+        </div>
+
+        <!-- Main Content Area -->
+        <div id="resultsArea" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Generative Output / Citations (Span 2) -->
+            <div class="lg:col-span-2 flex flex-col gap-6">
+                <!-- Answer Card -->
+                <div id="answerCard" class="hidden glass-panel rounded-2xl p-6 md:p-8 flex flex-col gap-4 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4">
+                        <span id="fallbackBadge" class="hidden bg-red-900/50 text-red-300 border border-red-800/50 text-xs px-2.5 py-1 rounded-full uppercase tracking-wider font-bold">Fallback Invoked</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-brand-400 flex items-center gap-2 mb-2 tracking-tight">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        Synthesized Answer
+                    </h2>
+                    <div id="answerContent" class="markdown-body text-slate-300 text-lg"></div>
+                </div>
+
+                <!-- Sources Card -->
+                <div id="sourcesContainer" class="hidden flex flex-col gap-4">
+                    <h2 class="text-xl font-bold flex items-center gap-2 text-slate-200 tracking-tight pl-2">
+                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        Source References
+                    </h2>
+                    <div id="sourcesList" class="flex flex-col gap-3"></div>
+                </div>
+            </div>
+
+            <!-- Diagnostics Dashboard (Span 1) -->
+            <div class="lg:col-span-1 flex flex-col gap-4">
+                <div class="glass-panel rounded-2xl p-6 flex flex-col gap-4 h-full">
+                    <h2 class="text-xl font-bold flex items-center gap-2 text-slate-200 tracking-tight">
+                        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        Pipeline Diagnostics
+                    </h2>
+                    <p class="text-sm text-slate-400 -mt-2">Candidates sorted by cross-encoder logit.</p>
+                    <div id="diagnosticsList" class="flex flex-col gap-4 overflow-y-auto max-h-[900px] pr-2 custom-scrollbar"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="/static/app.js"></script>
+</body>
+</html>
