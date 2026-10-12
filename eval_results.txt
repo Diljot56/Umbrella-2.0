@@ -1,0 +1,18 @@
+--- QUERY: How do I configure maximum job timeout in seconds? ---
+EXPECTED: configure_runners.md
+RETRIEVED SOURCES: ['configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'configure_runners.md']
+ANSWER: This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+CITED CHUNKS: ['a226becf1f0ece3d88cacc5ccc9bd388a32e7724d8cef249e7ceeb23379fff1c']
+
+--- QUERY: GitlabHttpError ---
+EXPECTED: gitlab_exceptions.py
+RETRIEVED SOURCES: ['gitlab_exceptions.py', 'gitlab_exceptions.py', 'gitlab_client.py', 'gitlab_exceptions.py', 'gitlab_exceptions.py']
+ANSWER: This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+CITED CHUNKS: ['4d3838bf8f296c60db9bcc8644a850a4faec00f63d1bdbb6615f5fe4e69f6714']
+
+--- QUERY: What parameter is used for clone_url when runner cannot reach instance? ---
+EXPECTED: configure_runners.md
+RETRIEVED SOURCES: ['configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'configure_runners.md']
+ANSWER: This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+CITED CHUNKS: ['28c38337eb23cd957a38d3338227e2472dcb4b013d9d91187a262e681cc1557e']
+
