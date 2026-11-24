@@ -1,0 +1,795 @@
+{
+  "summary": {
+    "total": 22,
+    "passed": 16,
+    "failed": 6,
+    "pass_rate": 0.7272727272727273,
+    "metric_standard": "Ragas/RAG-Triad (CR>=0.5, MRR>=0.5, Faithfulness=1.0)",
+    "category_stats": {
+      "cross_source": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "sum_cr": 1.5,
+        "sum_cp": 2.0,
+        "sum_f": 2.0,
+        "n_metric": 2
+      },
+      "out_of_corpus": {
+        "total": 3,
+        "passed": 0,
+        "failed": 3,
+        "sum_cr": 0.0,
+        "sum_cp": 0.0,
+        "sum_f": 0.0,
+        "n_metric": 0
+      },
+      "multi_hop": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "sum_cr": 2.0,
+        "sum_cp": 2.0,
+        "sum_f": 2.0,
+        "n_metric": 2
+      },
+      "lexical_trap": {
+        "total": 3,
+        "passed": 2,
+        "failed": 1,
+        "sum_cr": 3.0,
+        "sum_cp": 2.5,
+        "sum_f": 2.0,
+        "n_metric": 3
+      },
+      "ticket_retrieval": {
+        "total": 3,
+        "passed": 2,
+        "failed": 1,
+        "sum_cr": 3.0,
+        "sum_cp": 2.25,
+        "sum_f": 2.0,
+        "n_metric": 3
+      },
+      "markdown_spec": {
+        "total": 3,
+        "passed": 3,
+        "failed": 0,
+        "sum_cr": 3.0,
+        "sum_cp": 3.0,
+        "sum_f": 3.0,
+        "n_metric": 3
+      },
+      "short_query": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "sum_cr": 2.0,
+        "sum_cp": 2.0,
+        "sum_f": 2.0,
+        "n_metric": 2
+      },
+      "long_query": {
+        "total": 1,
+        "passed": 0,
+        "failed": 1,
+        "sum_cr": 1.0,
+        "sum_cp": 0.25,
+        "sum_f": 0.0,
+        "n_metric": 1
+      },
+      "code_retrieval": {
+        "total": 3,
+        "passed": 3,
+        "failed": 0,
+        "sum_cr": 3.0,
+        "sum_cp": 3.0,
+        "sum_f": 3.0,
+        "n_metric": 3
+      }
+    }
+  },
+  "results": [
+    {
+      "query_id": "A1",
+      "query": "How are HTTP errors handled in the GitLab Python client?",
+      "category": "cross_source",
+      "expected_sources": [
+        "gitlab_client.py",
+        "gitlab_exceptions.py"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "gitlab_exceptions.py",
+          "gitlab_exceptions.py",
+          "gitlab_client.py",
+          "gitlab_client.py",
+          "gitlab_client.py"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "gitlab_exceptions.py"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "Answer requires BOTH client (raises GitlabHttpError) and exceptions (defines it). Tests whether pipeline surfaces both sources."
+    },
+    {
+      "query_id": "A2",
+      "query": "What happens when a runner token is compromised?",
+      "category": "cross_source",
+      "expected_sources": [
+        "configure_runners.md",
+        "runner_issues.json"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 0.5,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "configure_runners.md"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "configure_runners.md discusses token rotation/security; runner_issues.json has the prefixed token bug. Both are relevant."
+    },
+    {
+      "query_id": "B1",
+      "query": "How do I configure GitLab Runner on Kubernetes with Helm?",
+      "category": "out_of_corpus",
+      "expected_sources": [],
+      "passed": false,
+      "metrics": {
+        "context_recall": null,
+        "context_precision_mrr": null,
+        "faithfulness": 0.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "configure_runners.md"
+        ],
+        "is_out_of_corpus": true,
+        "is_refusal": false
+      },
+      "notes": "Kubernetes/Helm setup is NOT in the corpus. A faithful system should say 'no supported answer'. Tests hallucination."
+    },
+    {
+      "query_id": "B2",
+      "query": "What is the default Docker image used by GitLab CI?",
+      "category": "out_of_corpus",
+      "expected_sources": [],
+      "passed": false,
+      "metrics": {
+        "context_recall": null,
+        "context_precision_mrr": null,
+        "faithfulness": 0.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md",
+          "markdown_spec.md"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "configure_runners.md"
+        ],
+        "is_out_of_corpus": true,
+        "is_refusal": false
+      },
+      "notes": "Default Docker image (ruby:2.5 or alpine) is NOT in the corpus. Tests whether the system hallucinates from world knowledge."
+    },
+    {
+      "query_id": "B3",
+      "query": "How to set up GitLab Pages with a custom domain?",
+      "category": "out_of_corpus",
+      "expected_sources": [],
+      "passed": false,
+      "metrics": {
+        "context_recall": null,
+        "context_precision_mrr": null,
+        "faithfulness": 0.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "markdown_spec.md",
+          "gitlab_client.py",
+          "markdown_spec.md",
+          "gitlab_client.py",
+          "gitlab_client.py"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "markdown_spec.md"
+        ],
+        "is_out_of_corpus": true,
+        "is_refusal": false
+      },
+      "notes": "Pages custom domain setup not in corpus. Only a brief mention of Pages exists. Tests precision of retrieval."
+    },
+    {
+      "query_id": "C1",
+      "query": "If I set GIT_DEPTH to 1, what problem occurs with retried jobs, and which variab",
+      "category": "multi_hop",
+      "expected_sources": [
+        "configure_runners.md"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "configure_runners.md"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "Requires joining info from 'Shallow cloning' section (GIT_DEPTH=1 issue) with 'Git submodule depth' (GIT_SUBMODULE_DEPTH). Separate chunks."
+    },
+    {
+      "query_id": "C2",
+      "query": "What exception is raised when the server returns 401 and what base class does it",
+      "category": "multi_hop",
+      "expected_sources": [
+        "gitlab_client.py",
+        "gitlab_exceptions.py"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "gitlab_client.py",
+          "gitlab_client.py",
+          "gitlab_exceptions.py",
+          "gitlab_client.py",
+          "gitlab_client.py"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "gitlab_client.py"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "gitlab_client.py raises GitlabAuthenticationError on 401; gitlab_exceptions.py shows it inherits from GitlabError. Multi-source multi-hop."
+    },
+    {
+      "query_id": "D1",
+      "query": "GitlabGetError",
+      "category": "lexical_trap",
+      "expected_sources": [
+        "gitlab_exceptions.py"
+      ],
+      "passed": false,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 0.5,
+        "faithfulness": 0.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "gitlab_client.py",
+          "gitlab_exceptions.py",
+          "gitlab_exceptions.py",
+          "gitlab_exceptions.py",
+          "gitlab_exceptions.py"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "gitlab_client.py"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "Similar to Q2 (GitlabHttpError) but a different, less prominent class. BM25 should still find it."
+    },
+    {
+      "query_id": "D2",
+      "query": "on_http_error decorator",
+      "category": "lexical_trap",
+      "expected_sources": [
+        "gitlab_exceptions.py"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "gitlab_exceptions.py",
+          "gitlab_exceptions.py",
+          "gitlab_exceptions.py",
+          "gitlab_exceptions.py",
+          "gitlab_exceptions.py"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "gitlab_exceptions.py"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "Decorator function defined at bottom of exceptions file. Tests if chunker splits it into a retrievable unit."
+    },
+    {
+      "query_id": "D3",
+      "query": "FF_USE_FASTZIP",
+      "category": "lexical_trap",
+      "expected_sources": [
+        "configure_runners.md"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md",
+          "markdown_spec.md",
+          "markdown_spec.md"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "configure_runners.md"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "Exact feature flag name. Appears in artifact/cache settings section. Tests BM25 exact match in docs."
+    },
+    {
+      "query_id": "E1",
+      "query": "What is the IPv6 health check bug in GitLab Runner Docker executor?",
+      "category": "ticket_retrieval",
+      "expected_sources": [
+        "runner_issues.json"
+      ],
+      "passed": false,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 0.25,
+        "faithfulness": 0.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md",
+          "runner_issues.json",
+          "configure_runners.md"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "configure_runners.md"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "GL-39939 describes the IPv6 health check service bug. Tests ticket content retrieval."
+    },
+    {
+      "query_id": "E2",
+      "query": "Runner tokens with instance prefix are not recognized",
+      "category": "ticket_retrieval",
+      "expected_sources": [
+        "runner_issues.json"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "runner_issues.json",
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "runner_issues.json"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "GL-39938 has this exact title. Tests direct title match in ticket data."
+    },
+    {
+      "query_id": "E3",
+      "query": "What is the FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR feature flag decision?",
+      "category": "ticket_retrieval",
+      "expected_sources": [
+        "runner_issues.json"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "runner_issues.json",
+          "configure_runners.md",
+          "markdown_spec.md",
+          "configure_runners.md",
+          "markdown_spec.md"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "runner_issues.json"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "GL-39940 deferred decision. Tests retrieval of ticket content with feature flag names."
+    },
+    {
+      "query_id": "F1",
+      "query": "How do I create a task list in GitLab Markdown?",
+      "category": "markdown_spec",
+      "expected_sources": [
+        "markdown_spec.md"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "markdown_spec.md",
+          "markdown_spec.md",
+          "markdown_spec.md",
+          "markdown_spec.md",
+          "markdown_spec.md"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "markdown_spec.md"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "Task lists section in markdown_spec.md. Tests if the second doc is retrievable."
+    },
+    {
+      "query_id": "F2",
+      "query": "What is GLFM and what features does it support?",
+      "category": "markdown_spec",
+      "expected_sources": [
+        "markdown_spec.md"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "markdown_spec.md",
+          "markdown_spec.md",
+          "gitlab_client.py",
+          "gitlab_client.py",
+          "configure_runners.md"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "markdown_spec.md"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "GLFM (GitLab Flavored Markdown) intro section. Semantic query about the markdown spec."
+    },
+    {
+      "query_id": "F3",
+      "query": "How are heading anchors generated in GitLab?",
+      "category": "markdown_spec",
+      "expected_sources": [
+        "markdown_spec.md"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "markdown_spec.md",
+          "markdown_spec.md",
+          "markdown_spec.md",
+          "markdown_spec.md",
+          "markdown_spec.md"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "markdown_spec.md"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "Heading anchors section. Tests semantic retrieval from markdown_spec."
+    },
+    {
+      "query_id": "G1",
+      "query": "tags",
+      "category": "short_query",
+      "expected_sources": [
+        "configure_runners.md"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "configure_runners.md",
+          "configure_runners.md",
+          "configure_runners.md",
+          "markdown_spec.md",
+          "markdown_spec.md"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "configure_runners.md"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "Extremely vague single-word query. Should match configure_runners tags section, but might get noise from everywhere."
+    },
+    {
+      "query_id": "G2",
+      "query": "error",
+      "category": "short_query",
+      "expected_sources": [
+        "gitlab_exceptions.py"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "gitlab_exceptions.py",
+          "gitlab_client.py",
+          "gitlab_exceptions.py",
+          "gitlab_exceptions.py",
+          "gitlab_exceptions.py"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "gitlab_exceptions.py"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "Single word 'error' appears across ALL sources. Tests whether system retrieves the most relevant (exceptions file)."
+    },
+    {
+      "query_id": "G3",
+      "query": "I am working on a GitLab CI pipeline and I have a runner that is configured to b",
+      "category": "long_query",
+      "expected_sources": [
+        "configure_runners.md"
+      ],
+      "passed": false,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 0.25,
+        "faithfulness": 0.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "gitlab_client.py",
+          "gitlab_client.py",
+          "gitlab_client.py",
+          "configure_runners.md",
+          "configure_runners.md"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "gitlab_client.py"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "Extremely verbose version of Q3. Tests whether long queries dilute embedding quality."
+    },
+    {
+      "query_id": "H1",
+      "query": "What is the http_request method signature in the Gitlab client?",
+      "category": "code_retrieval",
+      "expected_sources": [
+        "gitlab_client.py"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "gitlab_client.py",
+          "gitlab_client.py",
+          "gitlab_client.py",
+          "gitlab_client.py",
+          "gitlab_client.py"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "gitlab_client.py"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "http_request is a method inside the Gitlab class. Tests per-method chunking."
+    },
+    {
+      "query_id": "H2",
+      "query": "How does the Gitlab class handle SSL verification?",
+      "category": "code_retrieval",
+      "expected_sources": [
+        "gitlab_client.py"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "gitlab_client.py",
+          "gitlab_client.py",
+          "gitlab_client.py",
+          "gitlab_client.py",
+          "gitlab_client.py"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "gitlab_client.py"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "ssl_verify is set in __init__. Tests method-level chunking for __init__."
+    },
+    {
+      "query_id": "H3",
+      "query": "What does the from_config classmethod do?",
+      "category": "code_retrieval",
+      "expected_sources": [
+        "gitlab_client.py"
+      ],
+      "passed": true,
+      "metrics": {
+        "context_recall": 1.0,
+        "context_precision_mrr": 1.0,
+        "faithfulness": 1.0
+      },
+      "retrieval": {
+        "retrieved_sources": [
+          "gitlab_client.py",
+          "gitlab_exceptions.py",
+          "gitlab_client.py",
+          "gitlab_client.py",
+          "gitlab_client.py"
+        ]
+      },
+      "faithfulness_detail": {
+        "answer": "This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.",
+        "cited_sources": [
+          "gitlab_client.py"
+        ],
+        "is_out_of_corpus": false,
+        "is_refusal": false
+      },
+      "notes": "from_config is a classmethod inside the Gitlab class. Tests nested method retrieval via code chunker."
+    }
+  ]
+}

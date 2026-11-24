@@ -4,25 +4,30 @@ from typing import List, Tuple, Dict
 from src.models.search import SearchResultItem
 from src.models.generation import AskResponse, Citation
 
+NO_ANSWER = "No supported answer could be found in the provided sources."
+
 SYSTEM_INSTRUCTION = (
     "You are a verifiable enterprise assistant. Answer the user query strictly "
     "using only the supplied context passages. For every factual claim, append "
     "the citation marker corresponding to the source passage (e.g. [1], [2]). "
     "Never use external knowledge or extrapolate. If the context does not "
     "contain sufficient facts to answer the question, state exactly: "
-    "'No supported answer could be found in the provided sources.'"
+    f"'{NO_ANSWER}'"
 )
 
 class MockLLMClient:
     """Fallback client for offline / unit-testing scenarios."""
 
     def generate(self, system: str, user: str) -> str:
+        # Simulate refusal when the context signals low confidence or is absent
+        if "__LOW_CONFIDENCE__" in system:
+            return NO_ANSWER
         if "Content:" in system and "Source:" in system:
             return (
                 "This is a detailed and realistic answer based on the context. "
                 "It uses source [1] to verify claims."
             )
-        return "No supported answer could be found in the provided sources."
+        return NO_ANSWER
 
 
 class GeminiClient:
@@ -91,9 +96,17 @@ class GroundedGenerator:
     def generate_answer(
         self, query: str, candidates: List[SearchResultItem]
     ) -> AskResponse:
+        # Check whether the reranker flagged these results as low-confidence
+        low_confidence = bool(
+            candidates
+            and candidates[0].metadata
+            and candidates[0].metadata.get("low_confidence", False)
+        )
+
         formatted_context, marker_map = self.format_context(candidates)
 
-        system_prompt = f"{SYSTEM_INSTRUCTION}\n\nContext:\n{formatted_context}"
+        confidence_tag = "\n__LOW_CONFIDENCE__" if low_confidence else ""
+        system_prompt = f"{SYSTEM_INSTRUCTION}{confidence_tag}\n\nContext:\n{formatted_context}"
 
         try:
             raw_answer = self.llm.generate(system=system_prompt, user=query)

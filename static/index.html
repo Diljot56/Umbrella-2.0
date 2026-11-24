@@ -39,7 +39,44 @@
     </header>
 
     <main class="w-full max-w-7xl mx-auto flex-grow flex flex-col gap-6">
-        
+
+        <!-- Knowledge Base Panel -->
+        <section id="knowledgeBase" class="glass-panel rounded-2xl p-6 w-full flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold flex items-center gap-2 text-slate-200 tracking-tight">
+                    <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                    Knowledge Base
+                    <span id="kbStats" class="text-xs font-mono text-slate-500 ml-2"></span>
+                </h2>
+                <div class="flex items-center gap-3">
+                    <button id="kbToggle" onclick="toggleKbPanel()" class="text-slate-400 hover:text-brand-400 transition-colors text-sm flex items-center gap-1">
+                        <svg id="kbChevron" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        <span id="kbToggleLabel">Show files</span>
+                    </button>
+                    <label class="bg-brand-600 hover:bg-brand-500 text-white font-medium py-2 px-4 rounded-xl transition-colors cursor-pointer flex items-center gap-2 glow-hover shadow-lg shadow-brand-500/20 text-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        Upload File
+                        <input type="file" id="fileUpload" class="hidden" accept=".py,.md,.pdf,.json" multiple>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Upload progress area -->
+            <div id="uploadStatus" class="hidden"></div>
+
+            <!-- Expandable file list -->
+            <div id="kbFileList" class="hidden">
+                <div class="flex flex-wrap gap-2 mb-3">
+                    <button onclick="filterFiles('all')" class="kb-filter-btn active text-xs px-3 py-1 rounded-full border transition-colors">All</button>
+                    <button onclick="filterFiles('docs')" class="kb-filter-btn text-xs px-3 py-1 rounded-full border transition-colors">Documents</button>
+                    <button onclick="filterFiles('code')" class="kb-filter-btn text-xs px-3 py-1 rounded-full border transition-colors">Code</button>
+                    <button onclick="filterFiles('tickets')" class="kb-filter-btn text-xs px-3 py-1 rounded-full border transition-colors">Tickets</button>
+                    <button onclick="filterFiles('uploads')" class="kb-filter-btn text-xs px-3 py-1 rounded-full border transition-colors">Uploads</button>
+                </div>
+                <div id="kbFilesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[320px] overflow-y-auto pr-1 custom-scrollbar"></div>
+            </div>
+        </section>
+
         <!-- Search Area -->
         <section class="glass-panel rounded-2xl p-6 w-full flex flex-col gap-4">
             <div class="flex flex-col md:flex-row gap-3">

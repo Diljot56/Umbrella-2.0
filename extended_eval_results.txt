@@ -1,0 +1,198 @@
+============================================================
+[PASS] A1 (cross_source): How are HTTP errors handled in the GitLab Python client?...
+Expected sources : ['gitlab_client.py', 'gitlab_exceptions.py']
+Retrieved sources: ['gitlab_exceptions.py', 'gitlab_exceptions.py', 'gitlab_client.py', 'gitlab_client.py', 'gitlab_client.py']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['gitlab_exceptions.py']
+Notes            : Answer requires BOTH client (raises GitlabHttpError) and exceptions (defines it). Tests whether pipeline surfaces both sources.
+
+============================================================
+[PASS] A2 (cross_source): What happens when a runner token is compromised?...
+Expected sources : ['configure_runners.md', 'runner_issues.json']
+Retrieved sources: ['configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'configure_runners.md']
+Metrics          : CR=0.50 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['configure_runners.md']
+Notes            : configure_runners.md discusses token rotation/security; runner_issues.json has the prefixed token bug. Both are relevant.
+
+============================================================
+[FAIL] B1 (out_of_corpus): How do I configure GitLab Runner on Kubernetes with Helm?...
+Expected sources : []
+Retrieved sources: ['configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'configure_runners.md']
+Metrics          : CR=N/A (OOC) | MRR=N/A | Faith=0.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['configure_runners.md']
+Notes            : Kubernetes/Helm setup is NOT in the corpus. A faithful system should say 'no supported answer'. Tests hallucination.
+
+============================================================
+[FAIL] B2 (out_of_corpus): What is the default Docker image used by GitLab CI?...
+Expected sources : []
+Retrieved sources: ['configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'markdown_spec.md']
+Metrics          : CR=N/A (OOC) | MRR=N/A | Faith=0.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['configure_runners.md']
+Notes            : Default Docker image (ruby:2.5 or alpine) is NOT in the corpus. Tests whether the system hallucinates from world knowledge.
+
+============================================================
+[FAIL] B3 (out_of_corpus): How to set up GitLab Pages with a custom domain?...
+Expected sources : []
+Retrieved sources: ['markdown_spec.md', 'gitlab_client.py', 'markdown_spec.md', 'gitlab_client.py', 'gitlab_client.py']
+Metrics          : CR=N/A (OOC) | MRR=N/A | Faith=0.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['markdown_spec.md']
+Notes            : Pages custom domain setup not in corpus. Only a brief mention of Pages exists. Tests precision of retrieval.
+
+============================================================
+[PASS] C1 (multi_hop): If I set GIT_DEPTH to 1, what problem occurs with retried jo...
+Expected sources : ['configure_runners.md']
+Retrieved sources: ['configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'configure_runners.md']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['configure_runners.md']
+Notes            : Requires joining info from 'Shallow cloning' section (GIT_DEPTH=1 issue) with 'Git submodule depth' (GIT_SUBMODULE_DEPTH). Separate chunks.
+
+============================================================
+[PASS] C2 (multi_hop): What exception is raised when the server returns 401 and wha...
+Expected sources : ['gitlab_client.py', 'gitlab_exceptions.py']
+Retrieved sources: ['gitlab_client.py', 'gitlab_client.py', 'gitlab_exceptions.py', 'gitlab_client.py', 'gitlab_client.py']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['gitlab_client.py']
+Notes            : gitlab_client.py raises GitlabAuthenticationError on 401; gitlab_exceptions.py shows it inherits from GitlabError. Multi-source multi-hop.
+
+============================================================
+[FAIL] D1 (lexical_trap): GitlabGetError...
+Expected sources : ['gitlab_exceptions.py']
+Retrieved sources: ['gitlab_client.py', 'gitlab_exceptions.py', 'gitlab_exceptions.py', 'gitlab_exceptions.py', 'gitlab_exceptions.py']
+Metrics          : CR=1.00 | MRR=0.50 | Faith=0.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['gitlab_client.py']
+Notes            : Similar to Q2 (GitlabHttpError) but a different, less prominent class. BM25 should still find it.
+
+============================================================
+[PASS] D2 (lexical_trap): on_http_error decorator...
+Expected sources : ['gitlab_exceptions.py']
+Retrieved sources: ['gitlab_exceptions.py', 'gitlab_exceptions.py', 'gitlab_exceptions.py', 'gitlab_exceptions.py', 'gitlab_exceptions.py']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['gitlab_exceptions.py']
+Notes            : Decorator function defined at bottom of exceptions file. Tests if chunker splits it into a retrievable unit.
+
+============================================================
+[PASS] D3 (lexical_trap): FF_USE_FASTZIP...
+Expected sources : ['configure_runners.md']
+Retrieved sources: ['configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'markdown_spec.md', 'markdown_spec.md']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['configure_runners.md']
+Notes            : Exact feature flag name. Appears in artifact/cache settings section. Tests BM25 exact match in docs.
+
+============================================================
+[FAIL] E1 (ticket_retrieval): What is the IPv6 health check bug in GitLab Runner Docker ex...
+Expected sources : ['runner_issues.json']
+Retrieved sources: ['configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'runner_issues.json', 'configure_runners.md']
+Metrics          : CR=1.00 | MRR=0.25 | Faith=0.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['configure_runners.md']
+Notes            : GL-39939 describes the IPv6 health check service bug. Tests ticket content retrieval.
+
+============================================================
+[PASS] E2 (ticket_retrieval): Runner tokens with instance prefix are not recognized...
+Expected sources : ['runner_issues.json']
+Retrieved sources: ['runner_issues.json', 'configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'configure_runners.md']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['runner_issues.json']
+Notes            : GL-39938 has this exact title. Tests direct title match in ticket data.
+
+============================================================
+[PASS] E3 (ticket_retrieval): What is the FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR feature fla...
+Expected sources : ['runner_issues.json']
+Retrieved sources: ['runner_issues.json', 'configure_runners.md', 'markdown_spec.md', 'configure_runners.md', 'markdown_spec.md']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['runner_issues.json']
+Notes            : GL-39940 deferred decision. Tests retrieval of ticket content with feature flag names.
+
+============================================================
+[PASS] F1 (markdown_spec): How do I create a task list in GitLab Markdown?...
+Expected sources : ['markdown_spec.md']
+Retrieved sources: ['markdown_spec.md', 'markdown_spec.md', 'markdown_spec.md', 'markdown_spec.md', 'markdown_spec.md']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['markdown_spec.md']
+Notes            : Task lists section in markdown_spec.md. Tests if the second doc is retrievable.
+
+============================================================
+[PASS] F2 (markdown_spec): What is GLFM and what features does it support?...
+Expected sources : ['markdown_spec.md']
+Retrieved sources: ['markdown_spec.md', 'markdown_spec.md', 'gitlab_client.py', 'gitlab_client.py', 'configure_runners.md']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['markdown_spec.md']
+Notes            : GLFM (GitLab Flavored Markdown) intro section. Semantic query about the markdown spec.
+
+============================================================
+[PASS] F3 (markdown_spec): How are heading anchors generated in GitLab?...
+Expected sources : ['markdown_spec.md']
+Retrieved sources: ['markdown_spec.md', 'markdown_spec.md', 'markdown_spec.md', 'markdown_spec.md', 'markdown_spec.md']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['markdown_spec.md']
+Notes            : Heading anchors section. Tests semantic retrieval from markdown_spec.
+
+============================================================
+[PASS] G1 (short_query): tags...
+Expected sources : ['configure_runners.md']
+Retrieved sources: ['configure_runners.md', 'configure_runners.md', 'configure_runners.md', 'markdown_spec.md', 'markdown_spec.md']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['configure_runners.md']
+Notes            : Extremely vague single-word query. Should match configure_runners tags section, but might get noise from everywhere.
+
+============================================================
+[PASS] G2 (short_query): error...
+Expected sources : ['gitlab_exceptions.py']
+Retrieved sources: ['gitlab_exceptions.py', 'gitlab_client.py', 'gitlab_exceptions.py', 'gitlab_exceptions.py', 'gitlab_exceptions.py']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['gitlab_exceptions.py']
+Notes            : Single word 'error' appears across ALL sources. Tests whether system retrieves the most relevant (exceptions file).
+
+============================================================
+[FAIL] G3 (long_query): I am working on a GitLab CI pipeline and I have a runner tha...
+Expected sources : ['configure_runners.md']
+Retrieved sources: ['gitlab_client.py', 'gitlab_client.py', 'gitlab_client.py', 'configure_runners.md', 'configure_runners.md']
+Metrics          : CR=1.00 | MRR=0.25 | Faith=0.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['gitlab_client.py']
+Notes            : Extremely verbose version of Q3. Tests whether long queries dilute embedding quality.
+
+============================================================
+[PASS] H1 (code_retrieval): What is the http_request method signature in the Gitlab clie...
+Expected sources : ['gitlab_client.py']
+Retrieved sources: ['gitlab_client.py', 'gitlab_client.py', 'gitlab_client.py', 'gitlab_client.py', 'gitlab_client.py']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['gitlab_client.py']
+Notes            : http_request is a method inside the Gitlab class. Tests per-method chunking.
+
+============================================================
+[PASS] H2 (code_retrieval): How does the Gitlab class handle SSL verification?...
+Expected sources : ['gitlab_client.py']
+Retrieved sources: ['gitlab_client.py', 'gitlab_client.py', 'gitlab_client.py', 'gitlab_client.py', 'gitlab_client.py']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['gitlab_client.py']
+Notes            : ssl_verify is set in __init__. Tests method-level chunking for __init__.
+
+============================================================
+[PASS] H3 (code_retrieval): What does the from_config classmethod do?...
+Expected sources : ['gitlab_client.py']
+Retrieved sources: ['gitlab_client.py', 'gitlab_exceptions.py', 'gitlab_client.py', 'gitlab_client.py', 'gitlab_client.py']
+Metrics          : CR=1.00 | MRR=1.00 | Faith=1.00
+Answer           : This is a detailed and realistic answer based on the context. It uses source [1] to verify claims.
+Cited sources    : ['gitlab_client.py']
+Notes            : from_config is a classmethod inside the Gitlab class. Tests nested method retrieval via code chunker.
+
